@@ -123,7 +123,7 @@ def glColor(r, g, b): # Cambia el color recurrente
 	currentColor = color(round(r*255), round(g*255), round(b*255))
 
 def glFinish(): # Ejecuta la inscripcion del bitmap
-	write('Lab01.bmp', len(frBff), len(frBff[0]), frBff)
+	write('prueba1.bmp', len(frBff), len(frBff[0]), frBff)
 
 def glLine(x0, y0, x1, y1): # Pinta una linea
 	global frBff
@@ -155,18 +155,34 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 				i = currentMin + mid
 			values[index] = int(i)
 	
-	print(values)
 	currentX = values[0]
 	currentY = values[1]
 	finalX = values[2]
 	finalY = values[3]
-	slope = round((finalY - currentY)/(finalX - currentX))
-	print(slope)
-	while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
-		frBff[currentY][currentX] = currentColor
-		currentX = int(currentX + slope) 
-		currentY = int(currentY + slope)
-		print(currentX,currentY)
+
+	if (finalY - currentY) != 0:
+		slope = (finalX - currentX)/(finalY - currentY)
+		if slope > 1:
+			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
+				frBff[int(round(currentY))][int(round(currentX))] = currentColor
+				flag = currentX + slope
+				currentY += 1
+				for i in range(currentX+1, int(round(flag))):
+					frBff[int(round(currentY))][int(round(i))] = currentColor
+					currentX += 1
+
+		elif slope <= 1:
+			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
+				frBff[int(round(currentY))][int(round(currentX))] = currentColor
+				currentX += slope
+				currentY += 1
+
+	else:
+		while ((currentX <= abs(finalX))):
+			for i in range(currentX, finalX+1):
+				frBff[int(round(currentY))][int(round(i))] = currentColor
+				currentX += 1
+
 	print('finished')
 		
 
@@ -182,7 +198,7 @@ def glInit(): # Inicializa el programa
 	global height
 	currentColor = color(1,0,0)
 	width = 1024
-	height = 720 
+	height =  1024
 	frBff = glCreatorWindow(width, height) # Framebuffer
 	frBff = glClear() # Pinta el bg de un color
 	frBff = glClearColor(0,0,1) # Modifica color de bg
@@ -190,7 +206,9 @@ def glInit(): # Inicializa el programa
 	vertex(1,1)
 	vertex(0,0)
 	vertex(-1,-1)
-	glLine(-1,-1,1,1)
+	glLine(-1,-1,-0.8,1)
+	glLine(-1,-1,1,-0.8)
+	glLine(-1,0,1,0)
 	glFinish()
 
 glInit()
