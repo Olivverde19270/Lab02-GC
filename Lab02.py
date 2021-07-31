@@ -162,6 +162,14 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 
 	if (finalY - currentY) != 0:
 		slope = (finalX - currentX)/(finalY - currentY)
+
+		if ((finalX < currentX) and (finalY < currentY)):
+			finalX, currentX = currentX, finalX
+			finalY, currentY = currentY, finalY
+
+		if slope < 0:
+			print("slope",slope)
+
 		if slope >= 1:
 			#print(slope)
 			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
@@ -219,7 +227,8 @@ def glInit(): # Inicializa el programa
 	glLine(-1,-1,-1,1)
 	glLine(-1,-1,-1,1)
 	glLine(1,-1,1,1)
-	glLine(-1,-1,1,-0.875)
+	glLine(1,-0.5,-1,-1)
+	
 	
 	glFinish()
 
