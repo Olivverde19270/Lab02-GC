@@ -162,21 +162,21 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 
 	if (finalY - currentY) != 0:
 		slope = (finalX - currentX)/(finalY - currentY)
-		if slope > 1:
+		if slope >= 4:
 			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
 				frBff[int(round(currentY))][int(round(currentX))] = currentColor
 				flag = currentX + slope
-				currentY += 1
 				for i in range(currentX+1, int(round(flag))):
 					frBff[int(round(currentY))][int(round(i))] = currentColor
 					currentX += 1
+				currentX += 1
+				currentY += 1
 
-		elif slope <= 1:
+		elif slope < 4:
 			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
 				frBff[int(round(currentY))][int(round(currentX))] = currentColor
 				currentX += slope
 				currentY += 1
-
 	else:
 		while ((currentX <= abs(finalX))):
 			for i in range(currentX, finalX+1):
@@ -185,11 +185,6 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 
 	print('finished')
 		
-
-
-
-
-
 def glInit(): # Inicializa el programa
 	
 	global frBff
@@ -206,9 +201,21 @@ def glInit(): # Inicializa el programa
 	vertex(1,1)
 	vertex(0,0)
 	vertex(-1,-1)
+
 	glLine(-1,-1,-0.8,1)
-	glLine(-1,-1,1,-0.8)
+	glLine(-1,-1,1,0)
+	glLine(-1,-1,1,1)
+	glLine(-1,-1,0.5,1)
+	
+
 	glLine(-1,0,1,0)
+	glLine(0,-1,0,1)
+	glLine(-1,-1,1,-1)
+	glLine(-1,1,1,1)
+	glLine(-1,-1,-1,1)
+	glLine(-1,-1,-1,1)
+	glLine(1,-1,1,1)
+	
 	glFinish()
 
 glInit()
