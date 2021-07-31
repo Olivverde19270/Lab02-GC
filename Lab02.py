@@ -160,27 +160,47 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 	finalX = values[2]
 	finalY = values[3]
 
+	# ----------------------------------------------------------
+	# DISCLAIMER: Improvable Functional Code
+	# ----------------------------------------------------------
+
 	if (finalY - currentY) != 0:
 		slope = (finalX - currentX)/(finalY - currentY)
+
+		if slope < 0:
+
+			if ((finalX > currentX) and (finalY < currentY)):
+				finalX, currentX = currentX, finalX
+				finalY, currentY = currentY, finalY
+
+			if slope <= -1:
+				while ((currentX >= finalX) and (currentY <= finalY)):
+					frBff[int(round(currentY))][int(round(currentX))] = currentColor
+					flag = currentX + slope
+					for i in range(int(round(currentX))-1,int(round(flag)), -1):
+						if ((currentX >= finalX) and (currentY <= finalY)):
+							frBff[int(round(currentY))][int(round(i))] = currentColor
+							currentX -= 1
+					currentX = flag
+					currentY += 1
+			if slope > -1:
+				while ((currentX >= finalX) and (currentY <= finalY)):
+					frBff[int(round(currentY))][int(round(currentX))] = currentColor
+					currentX += slope
+					currentY += 1
 
 		if ((finalX < currentX) and (finalY < currentY)):
 			finalX, currentX = currentX, finalX
 			finalY, currentY = currentY, finalY
 
-		if slope < 0:
-			print("slope",slope)
-
 		if slope >= 1:
-			#print(slope)
 			while ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
 				frBff[int(round(currentY))][int(round(currentX))] = currentColor
 				flag = currentX + slope
-				#print(int(round(currentY)),int(round(currentX)))
 				for i in range(int(round(currentX))+1, int(round(flag))):
 					if ((currentX <= abs(finalX)) and (currentY <= abs(finalY))):
 						frBff[int(round(currentY))][int(round(i))] = currentColor
 						currentX += 1
-					#print(int(round(currentY)),int(round(i)))
 				currentX = flag
 				currentY += 1
 
@@ -189,13 +209,14 @@ def glLine(x0, y0, x1, y1): # Pinta una linea
 				frBff[int(round(currentY))][int(round(currentX))] = currentColor
 				currentX += slope
 				currentY += 1
-	else:
+	elif (finalY - currentY) == 0:
+		if (finalX < currentX):
+			finalX, currentX = currentX, finalX
+
 		while ((currentX <= abs(finalX))):
 			for i in range(currentX, finalX+1):
 				frBff[int(round(currentY))][int(round(i))] = currentColor
 				currentX += 1
-
-	print('finished')
 		
 def glInit(): # Inicializa el programa
 	
@@ -210,25 +231,45 @@ def glInit(): # Inicializa el programa
 	frBff = glClear() # Pinta el bg de un color
 	frBff = glClearColor(0,0,1) # Modifica color de bg
 	glColor(0,0,0)
-	vertex(1,1)
-	vertex(0,0)
-	vertex(-1,-1)
 
+	# vertex(1,1)
+	# vertex(0,0)
+	# vertex(-1,-1)
 
-	
-
-
-
-	
-	glLine(-1,0,1,0)
-	glLine(0,-1,0,1)
-	glLine(-1,-1,1,-1)
+	# Nule Slope
+	glLine(1,0,-1,0) # Vertical Reversible Point Case
+	glLine(0,-1,0,1) # Horizontal Reversible Point Case
+	glLine(1,-1,-1,-1)
 	glLine(-1,1,1,1)
 	glLine(-1,-1,-1,1)
 	glLine(-1,-1,-1,1)
 	glLine(1,-1,1,1)
-	glLine(1,-0.5,-1,-1)
-	
+
+	# Negative Slope
+	glLine(-1,0.8,1,-1) # Reversible Point Case
+	glLine(1,-1,-1,0.6)
+	glLine(1,-1,-1,0.4)
+	glLine(1,-1,-1,0.2)
+	glLine(1,-1,-1,0)
+
+	glLine(-0.8,1,1,-1) # Reversible Point Case
+	glLine(1,-1,-0.6,1)
+	glLine(1,-1,-0.4,1)
+	glLine(1,-1,-0.2,1)
+	glLine(1,-1,0,1)
+
+	# Positive Slope,
+	glLine(-0.8,-1,1,1) # Reversible Point Case
+	glLine(1,1,-0.6,-1)
+	glLine(1,1,-0.4,-1)
+	glLine(1,1,-0.2,-1)
+	glLine(1,1,0,-1)
+
+	glLine(-1,-0.8,1,1) # Reversible Point Case
+	glLine(1,1,-1,-0.6)
+	glLine(1,1,-1,-0.4)
+	glLine(1,1,-1,-0.2)
+	glLine(1,1,-1,0)
 	
 	glFinish()
 
